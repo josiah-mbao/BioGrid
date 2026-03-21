@@ -10,8 +10,8 @@ use systems::{bio, player, world};
 /// Tile size in pixels - used for converting grid coords to world coords.
 const TILE_SIZE: f32 = 32.0;
 
-/// Lerp speed for camera following.
-const CAMERA_LERP_SPEED: f32 = 5.0;
+/// Lerp speed for camera following. Use 1.0 for instant snap, or higher for smoother but slower.
+const CAMERA_LERP_SPEED: f32 = 1.0;
 
 fn main() {
     App::new()
@@ -23,6 +23,7 @@ fn main() {
             player::player_input,
             bio::wander_system,
             bio::metabolism_system,
+            world::chunk_manager_system,
             sync_grid_to_world,
             camera_follow_player,
         ))
