@@ -64,8 +64,10 @@ impl WanderTimer {
     /// Creates a new WanderTimer with random duration between min and max.
     pub fn new(min: f32, max: f32) -> Self {
         let duration = rand::random::<f32>() * (max - min) + min;
+        let mut timer = Timer::from_seconds(duration, TimerMode::Repeating);
+        timer.reset(); // Start the timer immediately
         Self {
-            timer: Timer::from_seconds(duration, TimerMode::Once),
+            timer,
             min_duration: min,
             max_duration: max,
         }
@@ -74,13 +76,18 @@ impl WanderTimer {
     /// Resets the timer with a new random duration.
     pub fn reset(&mut self) {
         let duration = rand::random::<f32>() * (self.max_duration - self.min_duration) + self.min_duration;
-        self.timer = Timer::from_seconds(duration, TimerMode::Once);
+        self.timer = Timer::from_seconds(duration, TimerMode::Repeating);
+        self.timer.reset();
     }
 }
 
 /// Nutritional value of a Plant - energy gained when consumed.
 #[derive(Component, Debug, Clone, Copy)]
 pub struct NutritionalValue(pub f32);
+
+/// Velocity for smooth movement (boid-inspired attraction)
+#[derive(Component, Debug, Clone, Copy)]
+pub struct Velocity(pub Vec2);
 
 /// Visual layer for Z-ordering (render depth).
 ///
