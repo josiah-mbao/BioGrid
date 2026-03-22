@@ -61,10 +61,12 @@ pub struct VisualLayer(pub f32);
 pub struct ChunkPosition(pub IVec2);
 
 /// Tag for chunk tile entities.
+#[allow(dead_code)]
 #[derive(Component, Debug, Clone, Copy)]
 pub struct ChunkTile;
 
 /// Tag for shadow entities (child entities for visual depth).
+#[allow(dead_code)]
 #[derive(Component, Debug, Clone, Copy)]
 pub struct Shadow;
 

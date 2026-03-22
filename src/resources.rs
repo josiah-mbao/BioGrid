@@ -4,7 +4,6 @@
 
 use bevy::prelude::*;
 use std::collections::HashMap;
-use std::time::{Duration, Instant};
 
 /// Time step controller for bio-simulation.
 ///
@@ -55,13 +54,6 @@ pub struct ChunkCache {
 }
 
 impl ChunkCache {
-    /// Creates a new empty ChunkCache.
-    pub fn new() -> Self {
-        Self {
-            visited: HashMap::new(),
-        }
-    }
-
     /// Marks a chunk as visited.
     pub fn mark_visited(&mut self, chunk_pos: (i32, i32)) {
         self.visited.insert(chunk_pos, true);

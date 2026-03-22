@@ -7,6 +7,7 @@ use crate::components::*;
 use crate::resources::TILE_SIZE;
 
 
+
 /// Attraction system - Friends move toward the Player.
 ///
 /// Uses simple boid-inspired attraction with separation.
