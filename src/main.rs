@@ -23,8 +23,9 @@ fn main() {
             Update,
             (
                 player::player_input,
-                bio::attraction_system,
+                bio::natural_movement_system,
                 bio::metabolism_system,
+                bio::initialize_friend_movement,
                 world::chunk_manager_system,
                 sync_grid_to_world,
                 camera_follow_player,
@@ -73,6 +74,8 @@ fn setup(mut commands: Commands) {
                 GridPosition(IVec2::new(i * 2, j * 2)),
                 Velocity(Vec2::ZERO),
                 Energy(100.0),
+                MovementTimer(0.3),
+                MovementSpeed(1.0),
                 VisualLayer(0.3), // Friend layer
                 SpriteBundle {
                     sprite: Sprite {

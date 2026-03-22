@@ -35,6 +35,19 @@ pub struct Plant;
 #[derive(Component, Debug, Clone, Copy)]
 pub struct Energy(pub f32);
 
+/// Individual movement timer for natural staggered movement.
+///
+/// Each Friend has a personal timer to create natural, non-simultaneous movement.
+/// Timer values range from 0.1 to 0.5 seconds for varied movement patterns.
+#[derive(Component, Debug, Clone, Copy)]
+pub struct MovementTimer(pub f32);
+
+/// Movement speed for individual Friends to create natural variation.
+///
+/// Values typically range from 0.8 to 1.2 for subtle speed differences.
+#[derive(Component, Debug, Clone, Copy)]
+pub struct MovementSpeed(pub f32);
+
 /// Nutritional value of a Plant - energy gained when consumed.
 #[derive(Component, Debug, Clone, Copy)]
 pub struct NutritionalValue(pub f32);
