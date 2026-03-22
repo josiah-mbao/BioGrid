@@ -6,11 +6,6 @@ use bevy::prelude::*;
 use crate::components::*;
 use crate::resources::TILE_SIZE;
 
-/// How far a Friend can "see" to find food (in tiles).
-const PERCEPTION_RANGE: i32 = 5;
-
-/// Movement speed for Friends (tiles per second).
-const MOVEMENT_SPEED: f32 = 1.0;
 
 /// Attraction system - Friends move toward the Player.
 ///

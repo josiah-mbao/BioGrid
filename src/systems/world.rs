@@ -21,7 +21,7 @@ pub fn chunk_manager_system(
     mut commands: Commands,
     player_query: Query<&GridPosition, With<PlayerTag>>,
     mut chunk_cache: ResMut<ChunkCache>,
-    mut tile_query: Query<(Entity, &ChunkTileEntity)>,
+    tile_query: Query<(Entity, &ChunkTileEntity)>,
 ) {
     let player_pos = player_query.single();
     

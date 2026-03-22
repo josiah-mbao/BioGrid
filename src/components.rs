@@ -14,19 +14,11 @@ use bevy::prelude::*;
 #[derive(Component, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct GridPosition(pub IVec2);
 
-/// Legacy alias for GridPosition (for compatibility with existing code).
-/// Prefer using GridPosition directly.
-#[deprecated(note = "Use GridPosition instead")]
-pub type GridPos = GridPosition;
 
 /// Marker tag for the player (Creator) entity.
 #[derive(Component, Debug, Clone, Copy)]
 pub struct PlayerTag;
 
-/// Legacy alias for PlayerTag (for compatibility).
-/// Prefer using PlayerTag directly.
-#[deprecated(note = "Use PlayerTag instead")]
-pub type Player = PlayerTag;
 
 /// Marker tag for Friend (animal) entities.
 #[derive(Component, Debug, Clone, Copy)]
@@ -36,9 +28,6 @@ pub struct Friend;
 #[derive(Component, Debug, Clone, Copy)]
 pub struct Plant;
 
-/// Marker tag for the placement cursor.
-#[derive(Component, Debug, Clone, Copy)]
-pub struct PlacementCursor;
 
 /// Energy component for Friends - determines hunger and reproduction.
 ///
@@ -49,37 +38,6 @@ pub struct PlacementCursor;
 #[derive(Component, Debug, Clone, Copy)]
 pub struct Energy(pub f32);
 
-/// Timer for wander behavior - controls when a Friend moves randomly.
-#[derive(Component, Debug, Clone)]
-pub struct WanderTimer {
-    /// The underlying timer
-    pub timer: Timer,
-    /// Minimum wait time in seconds
-    pub min_duration: f32,
-    /// Maximum wait time in seconds
-    pub max_duration: f32,
-}
-
-impl WanderTimer {
-    /// Creates a new WanderTimer with random duration between min and max.
-    pub fn new(min: f32, max: f32) -> Self {
-        let duration = rand::random::<f32>() * (max - min) + min;
-        let mut timer = Timer::from_seconds(duration, TimerMode::Repeating);
-        timer.reset(); // Start the timer immediately
-        Self {
-            timer,
-            min_duration: min,
-            max_duration: max,
-        }
-    }
-
-    /// Resets the timer with a new random duration.
-    pub fn reset(&mut self) {
-        let duration = rand::random::<f32>() * (self.max_duration - self.min_duration) + self.min_duration;
-        self.timer = Timer::from_seconds(duration, TimerMode::Repeating);
-        self.timer.reset();
-    }
-}
 
 /// Nutritional value of a Plant - energy gained when consumed.
 #[derive(Component, Debug, Clone, Copy)]
@@ -110,12 +68,3 @@ pub struct ChunkTile;
 #[derive(Component, Debug, Clone, Copy)]
 pub struct Shadow;
 
-/// Legacy alias for Energy (for compatibility).
-/// Prefer using Energy directly.
-#[deprecated(note = "Use Energy instead")]
-pub type Stats = Energy;
-
-/// Legacy alias for WanderTimer (for compatibility).
-/// Prefer using WanderTimer directly.
-#[deprecated(note = "Use WanderTimer instead")]
-pub type MovementTimer = WanderTimer;
