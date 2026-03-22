@@ -19,14 +19,17 @@ fn main() {
         .init_resource::<TimeStep>()
         .init_resource::<ChunkCache>()
         .add_systems(Startup, setup)
-        .add_systems(Update, (
-            player::player_input,
-            bio::wander_system,
-            bio::metabolism_system,
-            world::chunk_manager_system,
-            sync_grid_to_world,
-            camera_follow_player,
-        ))
+        .add_systems(
+            Update,
+            (
+                player::player_input,
+                bio::attraction_system,
+                bio::metabolism_system,
+                world::chunk_manager_system,
+                sync_grid_to_world,
+                camera_follow_player,
+            ),
+        )
         .run();
 }
 
@@ -52,33 +55,37 @@ fn setup(mut commands: Commands) {
         GridPosition(IVec2::ZERO),
         VisualLayer(0.4), // Player layer
         SpriteBundle {
-            sprite: Sprite { 
-                color: Color::CYAN, 
-                custom_size: Some(Vec2::splat(28.0)), 
-                ..default() 
+            sprite: Sprite {
+                color: Color::CYAN,
+                custom_size: Some(Vec2::splat(28.0)),
+                ..default()
             },
             transform: Transform::from_xyz(0.0, 0.0, 0.4),
             ..default()
         },
     ));
 
-    // Spawn an initial Friend - green square
-    commands.spawn((
-        Friend,
-        GridPosition(IVec2::new(2, 2)),
-        Energy(100.0),
-        WanderTimer::new(0.5, 1.5),
-        VisualLayer(0.3), // Friend layer
-        SpriteBundle {
-            sprite: Sprite { 
-                color: Color::GREEN, 
-                custom_size: Some(Vec2::splat(24.0)), 
-                ..default() 
-            },
-            transform: Transform::from_xyz(0.0, 0.0, 0.3),
-            ..default()
-        },
-    ));
+    // Spawn initial Friends - green squares
+    for i in 0..3 {
+        for j in 0..3 {
+            commands.spawn((
+                Friend,
+                GridPosition(IVec2::new(i * 2, j * 2)),
+                Velocity(Vec2::ZERO),
+                Energy(100.0),
+                VisualLayer(0.3), // Friend layer
+                SpriteBundle {
+                    sprite: Sprite {
+                        color: Color::GREEN,
+                        custom_size: Some(Vec2::splat(24.0)),
+                        ..default()
+                    },
+                    transform: Transform::from_xyz(0.0, 0.0, 0.3),
+                    ..default()
+                },
+            ));
+        }
+    }
 }
 
 /// Tag component for the camera entity.
@@ -116,8 +123,16 @@ fn camera_follow_player(
     let target_y = player_pos.0.y as f32 * TILE_SIZE;
 
     // Lerp camera position toward player
-    camera_transform.translation.x = lerp(camera_transform.translation.x, target_x, CAMERA_LERP_SPEED * time.delta_seconds());
-    camera_transform.translation.y = lerp(camera_transform.translation.y, target_y, CAMERA_LERP_SPEED * time.delta_seconds());
+    camera_transform.translation.x = lerp(
+        camera_transform.translation.x,
+        target_x,
+        CAMERA_LERP_SPEED * time.delta_seconds(),
+    );
+    camera_transform.translation.y = lerp(
+        camera_transform.translation.y,
+        target_y,
+        CAMERA_LERP_SPEED * time.delta_seconds(),
+    );
 }
 
 /// Linear interpolation helper.
