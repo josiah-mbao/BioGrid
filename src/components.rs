@@ -14,11 +14,9 @@ use bevy::prelude::*;
 #[derive(Component, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct GridPosition(pub IVec2);
 
-
 /// Marker tag for the player (Creator) entity.
 #[derive(Component, Debug, Clone, Copy)]
 pub struct PlayerTag;
-
 
 /// Marker tag for Friend (animal) entities.
 #[derive(Component, Debug, Clone, Copy)]
@@ -28,7 +26,6 @@ pub struct Friend;
 #[derive(Component, Debug, Clone, Copy)]
 pub struct Plant;
 
-
 /// Energy component for Friends - determines hunger and reproduction.
 ///
 /// Values:
@@ -37,7 +34,6 @@ pub struct Plant;
 /// - <= 0: Dies
 #[derive(Component, Debug, Clone, Copy)]
 pub struct Energy(pub f32);
-
 
 /// Nutritional value of a Plant - energy gained when consumed.
 #[derive(Component, Debug, Clone, Copy)]
@@ -69,4 +65,3 @@ pub struct ChunkTile;
 #[allow(dead_code)]
 #[derive(Component, Debug, Clone, Copy)]
 pub struct Shadow;
-

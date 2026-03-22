@@ -43,7 +43,6 @@ pub const VISIBLE_RADIUS: i32 = 2;
 /// Preload radius buffer (extra ring to prevent pop-in).
 pub const PRELOAD_RADIUS: i32 = 1;
 
-
 /// Cached chunk data for persistence.
 ///
 /// Stores the tile data for each chunk so player modifications persist.
@@ -64,5 +63,3 @@ impl ChunkCache {
         self.visited.contains_key(&chunk_pos)
     }
 }
-
-
