@@ -78,3 +78,47 @@ pub struct ChunkTile;
 #[allow(dead_code)]
 #[derive(Component, Debug, Clone, Copy)]
 pub struct Shadow;
+
+/// AI state for Friends - determines behavior and movement patterns.
+///
+/// States:
+/// - Wandering: Random movement within visible area
+/// - SeekingFood: Move toward nearest plant
+/// - FollowingPlayer: Move toward player
+/// - Reproducing: Stay near player, prepare to spawn offspring
+#[derive(Component, Debug, Clone, Copy, PartialEq, Eq)]
+pub enum AIState {
+    Wandering,
+    SeekingFood,
+    FollowingPlayer,
+    Reproducing,
+}
+
+/// Timer for state transitions and behavior duration.
+///
+/// Used to control how long Friends stay in each state before transitioning.
+#[derive(Component, Debug, Clone, Copy)]
+pub struct StateTimer(pub f32);
+
+/// Global timer for automatic plant spawning.
+///
+/// Controls how often new plants spawn in the world.
+#[derive(Resource, Debug)]
+pub struct PlantSpawnTimer {
+    /// Time until next plant spawn
+    pub timer: f32,
+    /// Interval between plant spawns in seconds
+    pub spawn_interval: f32,
+    /// Maximum plants per chunk
+    pub max_plants_per_chunk: usize,
+}
+
+impl Default for PlantSpawnTimer {
+    fn default() -> Self {
+        Self {
+            timer: 5.0, // Start with full timer to spawn after 5 seconds
+            spawn_interval: 5.0, // Spawn every 5 seconds
+            max_plants_per_chunk: 10,
+        }
+    }
+}

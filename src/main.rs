@@ -5,7 +5,7 @@ mod systems;
 use bevy::prelude::*;
 use components::*;
 use resources::*;
-use systems::{bio, player, world};
+use systems::{bio, player, world, plant_spawn};
 
 /// Tile size in pixels - used for converting grid coords to world coords.
 const TILE_SIZE: f32 = 32.0;
@@ -18,7 +18,14 @@ fn main() {
         .add_plugins(DefaultPlugins.set(ImagePlugin::default_nearest()))
         .init_resource::<TimeStep>()
         .init_resource::<ChunkCache>()
+        .init_resource::<PlantSpawnTimer>()
         .add_systems(Startup, setup)
+        .add_systems(
+            Startup,
+            (
+                bio::setup_friend_count_ui,
+            ),
+        )
         .add_systems(
             Update,
             (
@@ -26,6 +33,11 @@ fn main() {
                 bio::natural_movement_system,
                 bio::metabolism_system,
                 bio::initialize_friend_movement,
+                bio::state_transition_system,
+                bio::state_movement_system,
+                bio::update_friend_count_ui,
+                plant_spawn::plant_spawn_system,
+                plant_spawn::plant_death_system,
                 world::chunk_manager_system,
                 sync_grid_to_world,
                 camera_follow_player,
@@ -57,7 +69,7 @@ fn setup(mut commands: Commands) {
         VisualLayer(0.4), // Player layer
         SpriteBundle {
             sprite: Sprite {
-                color: Color::CYAN,
+                color: Color::BLACK,
                 custom_size: Some(Vec2::splat(28.0)),
                 ..default()
             },
@@ -66,7 +78,7 @@ fn setup(mut commands: Commands) {
         },
     ));
 
-    // Spawn initial Friends - green squares
+    // Spawn initial Friends - green squares with proper initialization
     for i in 0..3 {
         for j in 0..3 {
             commands.spawn((
@@ -74,8 +86,10 @@ fn setup(mut commands: Commands) {
                 GridPosition(IVec2::new(i * 2, j * 2)),
                 Velocity(Vec2::ZERO),
                 Energy(100.0),
-                MovementTimer(0.3),
-                MovementSpeed(1.0),
+                MovementTimer(0.0), // Will be initialized properly
+                MovementSpeed(1.0), // Will be initialized properly
+                AIState::Wandering, // Start in Wandering state
+                StateTimer(5.0),    // Will be initialized properly
                 VisualLayer(0.3), // Friend layer
                 SpriteBundle {
                     sprite: Sprite {

@@ -1,5 +1,5 @@
 use crate::components::*;
-use crate::resources::TILE_SIZE;
+use crate::resources::{TILE_SIZE, CHUNK_SIZE};
 use bevy::prelude::*;
 
 /// Handles player input for movement and spawning.
@@ -33,6 +33,7 @@ pub fn player_input(
         commands.spawn((
             Plant,
             GridPosition(plant_pos),
+            ChunkPosition(IVec2::new(plant_pos.x / CHUNK_SIZE, plant_pos.y / CHUNK_SIZE)),
             NutritionalValue(30.0),
             VisualLayer(0.2), // Plant layer (behind friends)
             SpriteBundle {

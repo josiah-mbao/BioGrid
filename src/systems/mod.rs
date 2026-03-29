@@ -5,3 +5,4 @@
 pub mod bio;
 pub mod player;
 pub mod world;
+pub mod plant_spawn;
